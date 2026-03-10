@@ -1,13 +1,6 @@
 /// <reference types="cypress" />
 
-import { faker } from '@faker-js/faker'
-
-
-  const name = faker.person.fullName()
-  const email = faker.internet.email()
-  const emailInvalido = faker.internet.email().replace('@', '')
-  const senhaValida = faker.internet.password({ length: 6 })
-  const senhaInvalida = faker.internet.password({ length: 3 })
+import { user } from "../support/factories/userFactory"
 
 describe('Cadastro de usuário', () => {
 
@@ -18,12 +11,12 @@ describe('Cadastro de usuário', () => {
     
     cy.get('.fa-lock').click()
 
-    cy.get('#user').type(name)
-    cy.get('#email').type(email)
-    cy.get('#password').type(senhaValida)
+    cy.get('#user').type(user.dadosValidos.name)
+    cy.get('#email').type(user.dadosValidos.email)
+    cy.get('#password').type(user.dadosValidos.senha)
 
-    console.log('name:',name)
-    console.log('email:',email)
+    console.log('nameeee:',user.dadosValidos.name)
+    console.log('emaillll:',user.dadosValidos.email)
 
     cy.get('#btnRegister').click()
 
@@ -33,12 +26,11 @@ describe('Cadastro de usuário', () => {
 
     cy.get('.swal2-html-container')
       .should('be.visible')
-      .should('have.text', `Bem-vindo ${name}`)
+      .should('have.text', `Bem-vindo ${user.dadosValidos.name}`)
     
     cy.url().should('include', '/my-account')
 
   })
-  
   it('Validar todos os campos vazios', () => {
     cy.visit('/')
       .get('.header-logo')    
@@ -69,8 +61,8 @@ describe('Cadastro de usuário', () => {
       .get('#user')
       .should('be.visible')
 
-    cy.get('#email').type(email)
-    cy.get('#password').type(senhaValida)
+    cy.get('#email').type(user.dadosValidos.email)
+    cy.get('#password').type(user.dadosValidos.senha)
 
     cy.get('#btnRegister').click()
 
@@ -79,7 +71,6 @@ describe('Cadastro de usuário', () => {
       .should('have.text', 'O campo nome deve ser prenchido')
       
   })
-
   it('Validar campo com email vazio', () => {
 
     cy.visit('/')
@@ -89,8 +80,8 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(name)
-    cy.get('#password').type(senhaValida)
+      .type(user.dadosValidos.name)
+    cy.get('#password').type(user.dadosValidos.senha)
 
     cy.get('#btnRegister').click()
 
@@ -99,7 +90,6 @@ describe('Cadastro de usuário', () => {
       .should('have.text', 'O campo e-mail deve ser prenchido corretamente')
       
   })
-
   it('Validar com email inválido', () => {
 
     cy.visit('/')
@@ -108,9 +98,9 @@ describe('Cadastro de usuário', () => {
     cy.get('.fa-lock').click()
 
     
-    cy.get('#user').type(name)
-    cy.get('#email').type(emailInvalido)
-    cy.get('#password').type(senhaValida)
+    cy.get('#user').type(user.dadosValidos.name)
+    cy.get('#email').type(user.dadosInvalidos.emailInvalido)
+    cy.get('#password').type(user.dadosValidos.senha)
 
     cy.get('#btnRegister').click()
 
@@ -119,7 +109,6 @@ describe('Cadastro de usuário', () => {
       .should('have.text', 'O campo e-mail deve ser prenchido corretamente')
       
   })
-
   it('Validar campo com senha vazia', () => {
 
     cy.visit('/')
@@ -129,10 +118,10 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(name)
+      .type(user.dadosValidos.name)
 
     cy.get('#email')
-    .type(email)
+      .type(user.dadosValidos.email)
 
     cy.get('#btnRegister').click()
 
@@ -140,7 +129,6 @@ describe('Cadastro de usuário', () => {
       .should('be.visible')
       .should('have.text', 'O campo senha deve ter pelo menos 6 dígitos')
   })
-
   it('Validar campo com senha inválida', () => {
 
     cy.visit('/')
@@ -150,15 +138,15 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(name) 
+      .type(user.dadosValidos.name) 
 
     cy.get('#email')
       .should('be.visible')
-      .type(email)
+      .type(user.dadosValidos.email)
 
     cy.get('#password')
       .should('be.visible')
-      .type(senhaInvalida)
+      .type(user.dadosInvalidos.senhaInvalida)
 
     cy.get('#btnRegister').click()
 
