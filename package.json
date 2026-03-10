@@ -1,0 +1,19 @@
+{
+  "name": "cypress-iniciante",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cypress": "^15.11.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.3.0"
+  }
+}
