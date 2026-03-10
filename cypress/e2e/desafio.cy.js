@@ -1,7 +1,13 @@
 /// <reference types="cypress" />
 
-import userDataInvalid from '../fixtures/desafio_dados_invalidos.json'
-import userDataValid from '../fixtures/desafio_dados_validos.json'
+import { faker } from '@faker-js/faker'
+
+
+  const name = faker.person.fullName()
+  const email = faker.internet.email()
+  const emailInvalido = faker.internet.email().replace('@', '')
+  const senhaValida = faker.internet.password({ length: 6 })
+  const senhaInvalida = faker.internet.password({ length: 3 })
 
 describe('Cadastro de usuário', () => {
 
@@ -12,11 +18,12 @@ describe('Cadastro de usuário', () => {
     
     cy.get('.fa-lock').click()
 
-    cy.get('#user').type(`${userDataValid.userName}`)
-    cy.get('#email').type(`${userDataValid.userEmail}`)
-    cy.get('#password').type(`${userDataValid.userPassword}`)
+    cy.get('#user').type(name)
+    cy.get('#email').type(email)
+    cy.get('#password').type(senhaValida)
 
-    console.log(userDataValid.userName)
+    console.log('name:',name)
+    console.log('email:',email)
 
     cy.get('#btnRegister').click()
 
@@ -26,7 +33,7 @@ describe('Cadastro de usuário', () => {
 
     cy.get('.swal2-html-container')
       .should('be.visible')
-      .should('have.text', `Bem-vindo ${userDataValid.userName}`)
+      .should('have.text', `Bem-vindo ${name}`)
     
     cy.url().should('include', '/my-account')
 
@@ -62,8 +69,8 @@ describe('Cadastro de usuário', () => {
       .get('#user')
       .should('be.visible')
 
-    cy.get('#email').type(`${userDataValid.userEmail}`)
-    cy.get('#password').type(`${userDataValid.userPassword}`)
+    cy.get('#email').type(email)
+    cy.get('#password').type(senhaValida)
 
     cy.get('#btnRegister').click()
 
@@ -82,8 +89,8 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(`${userDataValid.userName}`)
-    cy.get('#password').type(`${userDataValid.userPassword}`)
+      .type(name)
+    cy.get('#password').type(senhaValida)
 
     cy.get('#btnRegister').click()
 
@@ -101,9 +108,9 @@ describe('Cadastro de usuário', () => {
     cy.get('.fa-lock').click()
 
     
-    cy.get('#user').type(`${userDataValid.userName}`)
-    cy.get('#email').type(`${userDataInvalid.invalidEmail}`)
-    cy.get('#password').type(`${userDataValid.userPassword}`)
+    cy.get('#user').type(name)
+    cy.get('#email').type(emailInvalido)
+    cy.get('#password').type(senhaValida)
 
     cy.get('#btnRegister').click()
 
@@ -122,10 +129,10 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(`${userDataValid.userName}`)
+      .type(name)
 
     cy.get('#email')
-    .type(`${userDataValid.userEmail}`)
+    .type(email)
 
     cy.get('#btnRegister').click()
 
@@ -143,15 +150,15 @@ describe('Cadastro de usuário', () => {
 
     cy.get('#user')
       .should('be.visible')
-      .type(`${userDataValid.userName}`)
+      .type(name) 
 
     cy.get('#email')
       .should('be.visible')
-      .type(`${userDataValid.userEmail}`)
+      .type(email)
 
     cy.get('#password')
       .should('be.visible')
-      .type(`${userDataInvalid.senhaInvalida}`)
+      .type(senhaInvalida)
 
     cy.get('#btnRegister').click()
 
